@@ -34,9 +34,15 @@ namespace ParallerProgrammingCA
             var ticks = new Stopwatch();
             ticks.Start();
             paralelList = new ConcurrentBag<long>();
-            Parallel.For(0, max, i =>
+            Parallel.ForEach(Partitioner.Create(min-1, max), range =>
             {
-                CheckIfPrime(i);
+                for(long i = range.Item1; i<range.Item2; i++)
+                {
+                    if (CheckIfPrime(i))
+                    {
+                        paralelList.Add(i);
+                    }
+                }
             });
 
             ticks.Stop();
@@ -63,15 +69,6 @@ namespace ParallerProgrammingCA
             return true;
         }
 
-        private static Dictionary<long, long> ChunkRangeBy(long min, long max, int times)
-        {
-            var result = new Dictionary<long, long>();
-            for(int i = 0; i <times; i++)
-            {
-                result.Add(min + ((max-min) / times) * i, min+((max-min)/times)*(i+1));
-            }
-            return result;
-        }
     }
     public class ResultObj
     {
