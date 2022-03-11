@@ -19,7 +19,7 @@ namespace ParallerProgrammingCA
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        async void button1_Click(object sender, EventArgs e)
         {
             Results.DataSource = new List<long>();
             if (minNum.Value == 0 || maxNum.Value == 0 || (minNum.Value >= maxNum.Value))
@@ -27,7 +27,7 @@ namespace ParallerProgrammingCA
                 return;
             }
             
-            var src = _primeNumbers.GetPrimesParallely((long)minNum.Value, (long)maxNum.Value);
+            var src = await Task.Run(() => _primeNumbers.GetPrimesParallely((long)minNum.Value, (long)maxNum.Value));
             var list = src.list.ToList();
             list.Sort();
             Results.DataSource = list ;
